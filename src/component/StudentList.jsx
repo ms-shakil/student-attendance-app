@@ -1,45 +1,12 @@
 
+import { useContext } from "react"
+import { StudentContext } from "../contexts/StudentProvider"
+const StudentList = ()=>{
+    const {studentList,setStudentList,setStudentName,setUpdateObject,
+        setEditMode,editHandler,deleteHandler,addAbsentList,addPresentList
 
-const StudentList = (props)=>{
-    const {studentList,setStudentList,studentName,setStudentName,setUpdateObject,setEditMode} =props
-    const editHandler =(element)=>{
-        setStudentName(element.name)  
-        setUpdateObject(element)
-        setEditMode(true)
-     
-    }
-  const  deleteHandler =(element)=>{
-      const newArr = studentList.filter((el)=>{
-        if(el.id !== element.id){
-            return el
-        }
-      })
-      setStudentList(newArr)
-  }
-  const addPresentList =(el)=>{
-        if(el.isPrasent !== undefined){
-            return alert(`This student already aded in ${el.isPrasent ? "presentList" :"absentList"}`)
-        }
-         const newArr = studentList.map((element)=>{
-            if(element.id === el.id){
-                return {...element,isPrasent:true}
-            }
-            return element
-         })
-         setStudentList (newArr)
-  } 
-    const addAbsentList =(el)=>{
-        if(el.isPrasent !== undefined){
-            return alert(`This student already aded in ${el.isPrasent ? "presentList" :"absentList"}`)
-        }
-         const newArr = studentList.map((element)=>{
-            if(element.id === el.id){
-                return {...element,isPrasent:false}
-            }
-            return element
-         })
-         setStudentList (newArr)
-  }  
+    } =useContext(StudentContext)
+
  
 
     return(

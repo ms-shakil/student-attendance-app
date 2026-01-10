@@ -1,15 +1,8 @@
+import { useContext } from "react"
+import { StudentContext } from "../contexts/StudentProvider"
+const PresentStudentList = ()=>{
+        const { studentList,addedInAbsentList} =useContext(StudentContext)
 
-const PresentStudentList = (props)=>{
-    const { studentList,setStudentList} =props
-        const addedInAbsentList  =(el)=>{
-        const newArr = studentList.map((element)=>{
-            if(el.id === element.id){
-                return{...element, isPrasent:false}
-            }
-            return element
-        })
-        setStudentList(newArr)
-    }
     return(
         <>
          <div className="present_list">

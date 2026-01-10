@@ -3,9 +3,10 @@ import AbsentStudentList from './AbsentStudentList';
 import PresentStudentList from './PresentStudentList';
 import StudentList from './StudentList';
 
-
-const StudentSection = (props)=>{
-    const {studentName,setStudentName,studentList,setStudentList,setUpdateObject,setEditMode} =props
+import { StudentContext } from '../contexts/StudentProvider';
+import { useContext } from 'react';
+const StudentSection = ()=>{
+    const {studentName,setStudentName,studentList,setStudentList,setUpdateObject,setEditMode} =useContext(StudentContext)
     return(
         <div className="student_section">
          <StudentList   
