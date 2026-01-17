@@ -3,12 +3,9 @@ import '../App.css';
 import { StudentContext } from '../contexts/StudentProvider';
 const StudentForm = ()=>{
     const {studentName,
-        setStudentName,
-        studentList,
-        setStudentList,
-        updateObject,
-        editMode,
-        setEditMode,
+       
+        studentStates,
+        dispatch,
         changeHandler,
         submitHandler,
         createHandler,
@@ -20,8 +17,8 @@ const StudentForm = ()=>{
              <form onSubmit={submitHandler}>
                   <h1> Student Attendance App</h1>
                    <div>
-                       <input type="text" value={studentName}  onChange={changeHandler}/>
-                       <button type='submit'> { editMode ? " update data" :" add data"} </button>
+                       <input type="text" value={studentStates.studentName}  onChange={changeHandler}/>
+                       <button type='submit'> { studentStates.editMode ? " update data" :" add data"} </button>
                    </div>
              </form>
           </div>

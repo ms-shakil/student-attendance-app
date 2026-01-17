@@ -2,10 +2,7 @@
 import { useContext } from "react"
 import { StudentContext } from "../contexts/StudentProvider"
 const StudentList = ()=>{
-    const {studentList,setStudentList,setStudentName,setUpdateObject,
-        setEditMode,editHandler,deleteHandler,addAbsentList,addPresentList
-
-    } =useContext(StudentContext)
+    const {studentStates,dispatch} =useContext(StudentContext)
 
  
 
@@ -14,12 +11,12 @@ const StudentList = ()=>{
             <h2> StudentList</h2>
              <ul>
                 {
-                    studentList.map((element)=>(
+                    studentStates.studentList.map((element)=>(
                         <li key={element.id}> {element.name }
-                         <button onClick={()=>{editHandler(element)}}>edit</button>  
-                         <button onClick={()=>{deleteHandler(element)}}> delete</button>
-                         <button onClick={()=>{addPresentList(element)}}> add Present</button>
-                         <button onClick={()=>{addAbsentList(element)}}>add Absent</button>
+                         <button onClick={()=> {dispatch({type:"edit",payload:element})}}>edit</button>  
+                         <button onClick={()=>{dispatch({type:"delete",payload:element})}}> delete</button>
+                         <button onClick={()=>{dispatch({type:"present_or_absent",payload:{id:element.id,isPresent:true ,condi:element.isPresent}})}}> add Present</button>
+                         <button onClick={()=>{dispatch({type:"present_or_absent",payload:{id:element.id,isPresent:false,condi:element.isPresent}})}}>add Absent</button>
                         </li>
                     ))
                 }

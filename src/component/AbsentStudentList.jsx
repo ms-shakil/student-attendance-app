@@ -2,7 +2,7 @@
 import { useContext } from "react"
 import { StudentContext } from "../contexts/StudentProvider"
 const AbsentStudentList = ()=>{
-    const {studentList,addedInPresentList} = useContext(StudentContext)
+    const {studentStates, dispatch} = useContext(StudentContext)
     
   
     return(
@@ -11,9 +11,9 @@ const AbsentStudentList = ()=>{
             <h2>AbsetnList</h2>
               <ul>
                 {
-                   studentList.map((element)=>{
-                    if(element.isPrasent == false){
-                        return (<li> {element.name} <button onClick={()=>{addedInPresentList(element)}}> accidently aded</button>  </li>)
+                   studentStates.studentList.map((element)=>{
+                    if(element.isPresent == false){
+                        return (<li> {element.name} <button onClick={()=>{dispatch({type:"present_or_absent",payload:{id:element.id,isPresent:true,condi:element.isPresent}})}}> accidently aded</button>  </li>)
                     }
                    })
                 }
