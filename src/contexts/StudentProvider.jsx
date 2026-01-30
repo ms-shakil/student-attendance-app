@@ -1,5 +1,5 @@
 
-import { createContext, useReducer } from "react";
+import { createContext, useReducer ,useEffect} from "react";
 
 export const StudentContext = createContext()
 
@@ -10,6 +10,15 @@ const dataState = {
     editMode :false,
     updateObject:null
 }
+
+useEffect(()=>{
+    fetch(`http://localhost:4000/note`)
+    .then(res => res.json())
+    .then(data =>{
+        
+    })
+
+})
 const StudentReducer = (state, action)=>{
     switch(action.type){
         case "onChange":{
