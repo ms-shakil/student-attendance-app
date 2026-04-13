@@ -1,4 +1,5 @@
 
+import { type } from "@testing-library/user-event/dist/type";
 import { createContext, useReducer ,useEffect} from "react";
 
 export const StudentContext = createContext()
@@ -10,15 +11,6 @@ const dataState = {
     editMode :false,
     updateObject:null
 }
-
-useEffect(()=>{
-    fetch(`http://localhost:4000/note`)
-    .then(res => res.json())
-    .then(data =>{
-        
-    })
-
-})
 const StudentReducer = (state, action)=>{
     switch(action.type){
         case "onChange":{
@@ -27,19 +19,21 @@ const StudentReducer = (state, action)=>{
             studentName:action.payload
            }
         }
-        case "create":{
-           const newData ={
-            id:Date.now()+"",
-            name:state.studentName,
-            isPresent:undefined
-           }
-       
-           return{
-            ...state,
-           studentList:[...state.studentList,newData],
-           studentName:""
-           }
+        case "setData":{
+            return{
+                ...state,
+                studentList:action.payload
+            }
         }
+        // case "create":{
+
+       
+        //    return{
+        //     ...state,
+        //    studentList:[...state.studentList,newData],
+        //    studentName:""
+        //    }
+        // }
         case "edit":{
             console.log(state.studentList)
             return{
@@ -104,11 +98,35 @@ const StudentReducer = (state, action)=>{
 const StudentProvider  = (props)=>{
 
     const [studentStates, dispatch] =useReducer(StudentReducer,dataState)
+    const  getAllData = ()=>{
+        fetch("http://localhost:4000/note")
+        .then((response)=> response.json())
+        .then((data)=>{
+            dispatch({type:"setData",payload:data})
+        })
+    }
 
 
+    useEffect(()=>{
+        getAllData()
+      },[])
 
-
-
+    // create data/Post
+    const postData =(newData)=>{
+        fetch("http://localhost:4000/note",{
+            method:"POST",
+            body:JSON.stringify(newData),
+            headers:{
+                "Content-type":"application/json",
+            }
+        }).then(()=>{
+            getAllData()
+        })
+    }
+    //update /PUT
+    const putData =((element)=>{
+        fetch(``)
+    })
 
     const {children} =props
 //   const [studentName ,setStudentName] =useState("")
@@ -121,11 +139,20 @@ const StudentProvider  = (props)=>{
     }
     const submitHandler =(e)=>{
         e.preventDefault()
-        
+        const newData ={
+            id:Date.now()+"",
+            name:studentStates.studentName,
+            isPresent:undefined
+           }
         if(studentStates.studentName.trim() === ""){
             return alert("invalid input")
         }
-        studentStates.editMode ? dispatch({type:"update"}):dispatch({type:"create"})
+        if(studentStates.editMode == false){
+            postData(newData)
+        }else{
+            dispatch({type:"update"})
+        }
+        // studentStates.editMode ? dispatch({type:"update"}):dispatch({type:"create"})
 
     }
 //     const createHandler =()=>{
@@ -198,11 +225,7 @@ const StudentProvider  = (props)=>{
    studentStates,
    dispatch,
     changeHandler,
-    submitHandler,
-
-
-    
-  }
+    submitHandler,}
   return <StudentContext.Provider value={contextValue} > {children}  </StudentContext.Provider>
 }
 

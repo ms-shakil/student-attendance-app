@@ -8,8 +8,7 @@ const StudentForm = ()=>{
         dispatch,
         changeHandler,
         submitHandler,
-        createHandler,
-        updateHandler
+        
     } =useContext(StudentContext)
  
     return(
