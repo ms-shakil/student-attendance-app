@@ -45,32 +45,32 @@ const StudentReducer = (state, action)=>{
             
 
         }
-        case "update":{
-            return{
-                ...state,
-                studentList: state.studentList.map((item)=>{
-                    if(item.id === state.updateObject.id){
-                        return{...item,name:state.studentName}
-                    }else{
-                        return item
-                    }
-                })
-                ,
-                editMode:false,
-                studentName:""
-            }
+        // case "update":{
+        //     return{
+        //         ...state,
+        //         studentList: state.studentList.map((item)=>{
+        //             if(item.id === state.updateObject.id){
+        //                 return{...item,name:state.studentName}
+        //             }else{
+        //                 return item
+        //             }
+        //         })
+        //         ,
+        //         editMode:false,
+        //         studentName:""
+        //     }
 
-        }
-        case "delete":{
-            return{
-                ...state,
-                studentList:state.studentList.filter((el)=>{
-                  if(el.id !== action.payload.id){
-                      return el
-                       }
-                    })
-            }
-        }
+        // }
+        // case "delete":{
+        //     return{
+        //         ...state,
+        //         studentList:state.studentList.filter((el)=>{
+        //           if(el.id !== action.payload.id){
+        //               return el
+        //                }
+        //             })
+        //     }
+        // }
         case "present_or_absent":{
            
       
@@ -120,13 +120,36 @@ const StudentProvider  = (props)=>{
                 "Content-type":"application/json",
             }
         }).then(()=>{
+            studentStates.studentName=""
             getAllData()
         })
     }
-    //update /PUT
-    const putData =((element)=>{
-        fetch(``)
+    // PUT
+        const putData =()=>{
+            const {id ,...rest}=studentStates.updateObject
+            const updateNode ={...rest, name:studentStates.studentName}
+
+        fetch(`http://localhost:4000/note/${studentStates.updateObject.id}`,{
+            method:"PUT",
+            body:JSON.stringify(updateNode),
+            headers:{
+                "Content-type":"application/json",
+            }
+        }).then(()=>{
+            studentStates.studentName=""
+            getAllData()
+        })
+    }
+    //delete
+    const deletHand =((element)=>{
+        fetch(`http://localhost:4000/note/${element.id}`,{
+            method:"DELETE"
+        }).then(()=>{
+            getAllData()
+        })
     })
+
+    
 
     const {children} =props
 //   const [studentName ,setStudentName] =useState("")
@@ -150,7 +173,7 @@ const StudentProvider  = (props)=>{
         if(studentStates.editMode == false){
             postData(newData)
         }else{
-            dispatch({type:"update"})
+            putData(newData)
         }
         // studentStates.editMode ? dispatch({type:"update"}):dispatch({type:"create"})
 
@@ -225,7 +248,7 @@ const StudentProvider  = (props)=>{
    studentStates,
    dispatch,
     changeHandler,
-    submitHandler,}
+    submitHandler,deletHand}
   return <StudentContext.Provider value={contextValue} > {children}  </StudentContext.Provider>
 }
 
